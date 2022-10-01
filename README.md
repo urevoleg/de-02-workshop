@@ -21,7 +21,7 @@
 - `row_count` - кол-во загруженных строк
 
 Таблица `json_events` (события внутри скачанного json):
-- id - unique\pk
+- `id` - unique\pk
 - `event_id`
 - `event_timestamp` (допущение: в данных у поля нет указания timezone, **в проекте принято: event_timestamp передается в UTC**)
 - `json_object`

@@ -86,7 +86,38 @@ class FileEvent():
         2.
         """
         last_timestamp = self._get_last_event_timestamp(db_uri)
-        print(last_timestamp)
+        cur_max_timestamp = last_timestamp
+
+        file_attributes = self._get_file_attributes()
+
+        with open(file_attributes.get("json_file_path")) as json_f:
+            json_data = json.loads(json_f.read())
+            with psycopg2.connect(db_uri) as conn:
+                with conn.cursor() as cur:
+                    cnt_rows = 0
+                    for row in json_data:
+                        event_timestamp = parse(row.get("event_timestamp"))
+                        if event_timestamp > last_timestamp:
+                            cur.execute("""INSERT INTO stg.json_events
+                                           VALUES (%(id)s, %(event_id)s, %(event_timestamp)s, %(json_object)s)""",
+                                    {
+                                        "id": row.get("id"),
+                                        "event_id": row.get("event_id"),
+                                        "event_timestamp": event_timestamp,
+                                        "json_object": row
+                                    })
+                            if event_timestamp > cur_max_timestamp:
+                                cur_max_timestamp = event_timestamp
+                            cnt_rows +=1
+                cur.execute(
+                    f"""INSERT INTO stg.events_service (filename, uploaded_at, row_count) VALUES (%(filename)s, %(uploaded_at)s, %(row_count)s)""",
+                    {
+                        "filename": file_attributes.get("file_name"),
+                        "uploaded_at": dt.datetime.now(),
+                        'row_count': cnt_rows
+                    })
+                conn.commit()
+
 
 
     def _get_last_event_timestamp(self, db_uri):
