@@ -64,6 +64,16 @@ class Config(object):
     PG_WAREHOUSE_CONNECTION = PostgresHook(PG_WAREHOUSE_CONNECTION_CONN_ID).get_uri()
 
 
+class SQLDdlScripts():
+    CREATE_SCHEMAS = "migrations/create_schemas.sql"
+
+    CREATE_CDM_DM_SETTLEMENT_REPORT = "migrations/cdm/dm_settlement_report.sql"
+
+
+class FileEvent():
+    pass
+
+
 if __name__ == '__main__':
     with open("/home/urev/projects/de-02-workshop/src/events-2022-Sep-30-2134.json") as f:
         json_data = json.loads(f.read())
