@@ -79,12 +79,27 @@ class FileEvent():
         """
         pass
 
+    def _get_file_attributes(self):
+        file_date = dt.datetime.now() - dt.timedelta(days=1)
+        file_name = f"events-{file_date.strftime('%Y')}-{file_date.strftime('%b')}-{file_date.strftime('%d')}-2134.json.zip"
+        file_path = os.path.join(Config.STAGE_DIR, file_name)
+        file_url = Config.EVENTS_JSON_URL + file_name
+        return {
+            "file_name": file_name,
+            "file_path": file_path,
+            "file_url": file_url
+        }
+
     @staticmethod
     def get_file_url():
-        file_date = dt.datetime.now() - dt.timedelta(days=1)
-        file_url = Config.EVENTS_JSON_URL + f"events-{file_date.strftime('%Y')}-{file_date.strftime('%b')}-{file_date.strftime('%d')}-2134.json.zip"
-        return file_url
+        return FileEvent()._get_file_attributes().get("file_url")
 
+    def _is_file_exist(self):
+        return 1 if os.path.exists(FileEvent.get_file_url().get("file_path")) else 0
+
+    @staticmethod
+    def is_file_exist():
+        return FileEvent()._is_file_exist()
 
 
 if __name__ == '__main__':

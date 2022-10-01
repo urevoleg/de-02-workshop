@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator
+from airflow.operators.python import PythonOperator, ShortCircuitOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 
 from airflow.operators.empty import EmptyOperator
@@ -47,11 +47,15 @@ with DAG(
 
     upload_and_unzip_files = BashOperator(
         task_id="upload_and_unzip_files",
-        #bash_command=f"""wget {FileEvent.get_file_url()} -P {Config.STAGE_DIR}"""
-        bash_command=f"""echo {Config.STAGE_DIR}"""
+        bash_command=f"""wget {FileEvent.get_file_url()} -P {Config.STAGE_DIR}"""
     )
 
-    begin >> upload_and_unzip_files >> end
+    check_event_files_exist = ShortCircuitOperator(
+        task_id="check_event_files_exist",
+        python_callable=FileEvent.is_file_exist,
+    )
+
+    begin >> upload_and_unzip_files >> check_event_files_exist >> end
 
 
 if __name__ == '__main__':
