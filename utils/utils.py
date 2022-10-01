@@ -71,7 +71,7 @@ class SQLDdlScripts():
     CREATE_CDM_DM_SETTLEMENT_REPORT = "migrations/cdm/dm_settlement_report.sql"
 
 
-class UploadFileEvent():
+class FileEvent():
     def execute(self):
         """
         1. Upload ZIP
@@ -79,17 +79,12 @@ class UploadFileEvent():
         """
         pass
 
-    def upload(self):
-
-        file_url = Config.EVENTS_JSON_URL + f"events-{year}-{month_name}-{day}-2134.json.zip"
-        response = wget.download(file_url)
+    @staticmethod
+    def get_file_url():
+        file_date = dt.datetime.now() - dt.timedelta(days=1)
+        file_url = Config.EVENTS_JSON_URL + f"events-{file_date.strftime('%Y')}-{file_date.strftime('%b')}-{file_date.strftime('%d')}-2134.json.zip"
+        return file_url
 
 
 if __name__ == '__main__':
-    with open("/home/urev/projects/de-02-workshop/src/events-2022-Sep-30-2134.json") as f:
-        json_data = json.loads(f.read())
-
-    for idx, row in enumerate(json_data):
-        pprint(row)
-        if idx > 5:
-            break
+    print(FileEvent.get_file_url())
