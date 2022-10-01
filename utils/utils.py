@@ -72,12 +72,36 @@ class SQLDdlScripts():
 
 
 class FileEvent():
-    def execute(self):
+
+    @staticmethod
+    def load_json_events(db_uri):
+        f = FileEvent()
+        f._load_json_events(db_uri)
+
+
+
+    def _load_json_events(self, db_uri):
         """
-        1. Upload ZIP
-        2. Unzip json
+        1. Загружать по времени если event_timestamp >
+        2.
         """
-        pass
+        last_timestamp = self._get_last_event_timestamp(db_uri)
+        print(last_timestamp)
+
+
+    def _get_last_event_timestamp(self, db_uri):
+        to_scalar = lambda one_row: one_row[0]
+
+        stmt = f"""SELECT max(event_timestamp)
+                       FROM stg.json_events"""
+
+        with psycopg2.connect(db_uri) as conn:
+            with conn.cursor() as cur:
+                cur.execute(stmt)
+                r = cur.fetchone()
+                last_value = to_scalar(r) or dt.datetime(1970, 1, 1)
+        return last_value
+
 
     def _get_file_attributes(self):
         file_date = dt.datetime.now() - dt.timedelta(days=1)

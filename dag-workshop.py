@@ -55,7 +55,15 @@ with DAG(
         python_callable=FileEvent.is_file_exist,
     )
 
-    begin >> upload_and_unzip_files >> check_event_files_exist >> end
+    load_json_events_to_staging = PythonOperator(
+        task_id="load_json_events_to_staging",
+        python_callable=FileEvent.load_json_events,
+        op_kwargs={
+            "db_uri": Config.PG_WAREHOUSE_CONNECTION
+        }
+    )
+
+    begin >> upload_and_unzip_files >> check_event_files_exist >> load_json_events_to_staging >> end
 
 
 if __name__ == '__main__':
