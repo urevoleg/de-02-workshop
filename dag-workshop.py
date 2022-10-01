@@ -47,7 +47,7 @@ with DAG(
 
     upload_and_unzip_files = BashOperator(
         task_id="upload_and_unzip_files",
-        bash_command=f"""wget -N {FileEvent.get_file_url()} -P {Config.STAGE_DIR} && unzip -o {FileEvent.get_file_attributes().get('zip_file_path')} -d {Config.STAGE_DIR}"""
+        bash_command=f"""wget -N {FileEvent.get_file_url()} -P {Config.STAGE_DIR} && unzip -o {FileEvent.get_file_attributes().get('zip_file_path')} -d {Config.STAGE_DIR} && rm {FileEvent.get_file_attributes().get('zip_file_path')}"""
     )
 
     check_event_files_exist = ShortCircuitOperator(
