@@ -98,7 +98,7 @@ class FileEvent():
                     for row in json_data:
                         event_timestamp = parse(row.get("event_timestamp"))
                         if event_timestamp > last_timestamp:
-                            cur.execute("""INSERT INTO stg.json_events
+                            cur.execute("""INSERT INTO stg.json_events (event_id, event_timestamp, json_object)
                                            VALUES (%(event_id)s, %(event_timestamp)s, %(json_object)s)""",
                                     {
                                         "event_id": row.get("event_id"),
