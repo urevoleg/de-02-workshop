@@ -17,6 +17,7 @@ drop table if exists dds.f_events cascade;
 create table if not exists dds.d_service (
 id serial primary key,
 last_id varchar,
+table_name varchar,
 loaded_at timestamp
 );
 
