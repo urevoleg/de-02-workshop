@@ -1,11 +1,13 @@
 import os
 import re
 import datetime as dt
+from pprint import pprint
+import json
 
 import logging
 from logging import StreamHandler
 
-from airflow.hooks.base import BaseHook
+#from airflow.hooks.base import BaseHook
 
 
 def get_logger(logger_name="super_logger", handler=StreamHandler()):
@@ -36,4 +38,10 @@ class Config(object):
 
 
 if __name__ == '__main__':
-    pass
+    with open("/home/urev/projects/de-02-workshop/src/events-2022-Sep-30-2134.json") as f:
+        json_data = json.loads(f.read())
+
+    for idx, row in enumerate(json_data):
+        pprint(row)
+        if idx > 5:
+            break
