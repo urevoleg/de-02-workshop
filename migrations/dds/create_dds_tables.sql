@@ -100,6 +100,9 @@ AND (YEAR < 2500)
 	)
 );
 
+
+
+
 create table if not exists dds.f_events (
 id serial primary key,
 user_id int,

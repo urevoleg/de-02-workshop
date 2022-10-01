@@ -90,6 +90,9 @@ class FileEvent():
 
         file_attributes = self._get_file_attributes()
 
+        #TODO
+        # если текущий файл есть в таблице event_service, то грузить ничего не надо
+
         with open(file_attributes.get("json_file_path")) as json_f:
             json_data = json.loads(json_f.read())
             with psycopg2.connect(db_uri) as conn:

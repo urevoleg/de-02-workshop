@@ -12,7 +12,6 @@
 
 # STG
 
-В `stg` создать таблицу `events_service` в которой вести учет зарузки в БД
 
 Структура `events_service`:
 - `id`
@@ -26,18 +25,31 @@
 - `event_timestamp` (допущение: в данных у поля нет указания timezone, **в проекте принято: event_timestamp передается в UTC**)
 - `json_object`
 
-Режим обновления\добавления: по времени event_timestamp
+Режим обновления\добавления: отслеживание изменеинй по полю `event_timestamp`
 
 # DDS
+DWH реализовано согласно модели Snowflake, выбор сделан исходя из оптимальной сложности и гибкости, тк на текущий момент
+бизнес не знает будет ли продолжать развитие.
 
-Таблица `service`:
-- id
-- last_id (последний id из таблицы stg.json_events, который мы положили в DDS)
-- loaded_at
+Допущение: атрибуты сущностей не изменяются, CDC0.
+
+
+Таблица `d_service`:
+- `id`
+- `last_id` (последний id из таблицы stg.json_events, который мы положили в DDS)
+- 'table_name'
+- `loaded_at`
 
 Таблица фактов `f_events`:
-- id
-- event_id
+- `id`
+- `user_id`
+- `event_type_id`
+- `event_timestamp_id`
+- `geo_id`
+- `os_id`
+- `referer_id`
+- `utm_campaign_id`
+- `device_id`
 
 
 Справочники:
@@ -76,6 +88,10 @@
   - `utm_campaign`
   - `utm_content`
 
+
+Структура хранилища показана на рисунке ниже:
+
+![](img/img.png)
 
 # CDM
 
