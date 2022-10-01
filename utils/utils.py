@@ -3,6 +3,7 @@ import re
 import json
 import datetime as dt
 from dateutil.parser import parse
+from pprint import pprint
 
 import requests
 
@@ -20,8 +21,6 @@ from psycopg2.extras import NamedTupleCursor
 from airflow.hooks.base import BaseHook
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from airflow.models.variable import Variable
-
-from pydantic import BaseModel
 
 
 def debug(func):
