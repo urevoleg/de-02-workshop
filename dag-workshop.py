@@ -47,8 +47,8 @@ with DAG(
 
     upload_and_unzip_files = BashOperator(
         task_id="upload_and_unzip_files",
-        #bash_command=f"""wget {FileEvent.get_file_url()} -P """
-        bash_command="""pwd"""
+        #bash_command=f"""wget {FileEvent.get_file_url()} -P {Config.STAGE_DIR}"""
+        bash_command=f"""echo {Config.STAGE_DIR}"""
     )
 
     begin >> upload_and_unzip_files >> end
