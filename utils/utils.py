@@ -108,9 +108,9 @@ class FileEvent():
                             if event_timestamp > cur_max_timestamp:
                                 cur_max_timestamp = event_timestamp
                             cnt_rows +=1
-                cur.execute(
-                    f"""INSERT INTO stg.events_service (filename, uploaded_at, row_count) VALUES (%(filename)s, %(uploaded_at)s, %(row_count)s)""",
-                    {
+                    cur.execute(
+                        f"""INSERT INTO stg.events_service (filename, uploaded_at, row_count) VALUES (%(filename)s, %(uploaded_at)s, %(row_count)s)""",
+                        {
                         "filename": file_attributes.get("file_name"),
                         "uploaded_at": dt.datetime.now(),
                         'row_count': cnt_rows
