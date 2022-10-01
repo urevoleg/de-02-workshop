@@ -104,7 +104,7 @@ class FileEvent():
                                         "id": row.get("id"),
                                         "event_id": row.get("event_id"),
                                         "event_timestamp": event_timestamp,
-                                        "json_object": row
+                                        "json_object": json.dumps(row)
                                     })
                             if event_timestamp > cur_max_timestamp:
                                 cur_max_timestamp = event_timestamp
