@@ -86,16 +86,21 @@ class FileEvent():
         file_url = Config.EVENTS_JSON_URL + file_name
         return {
             "file_name": file_name,
-            "file_path": file_path,
-            "file_url": file_url
+            "zip_file_path": file_path,
+            "file_url": file_url,
+            "json_file_path": file_path.replace(".zip", "")
         }
+
+    @staticmethod
+    def get_file_attributes():
+        return FileEvent()._get_file_attributes()
 
     @staticmethod
     def get_file_url():
         return FileEvent()._get_file_attributes().get("file_url")
 
     def _is_file_exist(self):
-        return 1 if os.path.exists(FileEvent()._get_file_attributes().get("file_path")) else 0
+        return 1 if os.path.exists(FileEvent()._get_file_attributes().get("json_file_path")) else 0
 
     @staticmethod
     def is_file_exist():
