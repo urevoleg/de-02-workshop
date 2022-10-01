@@ -35,7 +35,7 @@ args = {
 
 
 with DAG(
-        dag_id='template_dag',
+        dag_id='Super-Puper-DAG',
         default_args=args,
         catchup=False,
         start_date=dt.datetime.today() - dt.timedelta(days=8),
@@ -47,10 +47,11 @@ with DAG(
 
     upload_and_unzip_files = BashOperator(
         task_id="upload_and_unzip_files",
-        bash_command=f"""wget {FileEvent.get_file_url()} """
+        #bash_command=f"""wget {FileEvent.get_file_url()} -P """
+        bash_command="""pwd"""
     )
 
-    begin >> end
+    begin >> upload_and_unzip_files >> end
 
 
 if __name__ == '__main__':
