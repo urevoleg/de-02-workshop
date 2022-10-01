@@ -5,7 +5,7 @@ import datetime as dt
 from dateutil.parser import parse
 from pprint import pprint
 
-import requests
+import wget
 
 from functools import wraps
 
@@ -62,6 +62,8 @@ class Config(object):
     PG_WAREHOUSE_CONNECTION_CONN_ID = "pg_hackaton_con"
     PG_WAREHOUSE_CONNECTION = PostgresHook(PG_WAREHOUSE_CONNECTION_CONN_ID).get_uri()
 
+    EVENTS_JSON_URL = "https://data.ijklmn.xyz/events/"
+
 
 class SQLDdlScripts():
     CREATE_SCHEMAS = "migrations/create_schemas.sql"
@@ -69,8 +71,18 @@ class SQLDdlScripts():
     CREATE_CDM_DM_SETTLEMENT_REPORT = "migrations/cdm/dm_settlement_report.sql"
 
 
-class FileEvent():
-    pass
+class UploadFileEvent():
+    def execute(self):
+        """
+        1. Upload ZIP
+        2. Unzip json
+        """
+        pass
+
+    def upload(self):
+
+        file_url = Config.EVENTS_JSON_URL + f"events-{year}-{month_name}-{day}-2134.json.zip"
+        response = wget.download(file_url)
 
 
 if __name__ == '__main__':
