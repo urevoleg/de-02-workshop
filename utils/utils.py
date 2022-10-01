@@ -95,7 +95,7 @@ class FileEvent():
         return FileEvent()._get_file_attributes().get("file_url")
 
     def _is_file_exist(self):
-        return 1 if os.path.exists(FileEvent._get_file_attributes().get("file_path")) else 0
+        return 1 if os.path.exists(FileEvent()._get_file_attributes().get("file_path")) else 0
 
     @staticmethod
     def is_file_exist():
